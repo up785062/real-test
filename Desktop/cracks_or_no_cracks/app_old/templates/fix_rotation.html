@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Concrete Crack Detector</title>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js">
+ </script>
+ <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.0.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+<meta charset ="UTF-8">
+<meta http-equiv = "X-UA-Compatible" content ="IE=edge">
+<meta name="viewport" content="width = device-width, initial-scale = 1">  
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body style= "background-color:#87CEFA">
+
+       
+<style>
+.jumbotron{background-color:#BA55D3;
+}
+/* the pop up itself */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color:black;
+  background-color: rgba(0,0,0,0.4); 
+}
+
+/*help box */
+.modal-content {
+  background-color: #ffffff;
+  margin: 15% auto; 
+  padding: 30px;
+  border: 1px #b1b1b1;
+  width: 80%; 
+}
+
+/* close button */
+.close {
+  color: black;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+ .nodeCenter{
+ 
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    width:160px;
+    height:160px;
+}
+</style>  
+<button id="myBtn">About Web App and Help </button>
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+  <strong class="close">&times;</strong>
+	<h3> About Web App and Help </h3>
+	<br>
+	</br>
+    <h5><strong> About Web App :</strong></h5>
+	<p> This web app is used to detect cracks on surfaces of buildings and inform the user 
+	  the surface's severity  and the next possible action to be taken by giving a category based on a large image dataset of previous images taken by surveyors which was used to train Convolutional Neural Network to give the user a result.</p>
+	  
+	  <h5><strong> Help:</strong></h5>
+	  <p><strong>To have the best experience of using the app use Chrome or Firefox.</strong> To use this app you can only upload 1 image of surface at time, 
+	  The image must be uploaded first otherwise the "Detect!" button will not activate. Once the image has been chosen a preview of the chosen image will be displayed
+	  then you proceed in pressing the "Detect!" button for the app to detect the type of crack it is, its severity and the next possible action to take in form as a category.
+	  The categories are :
+	  </p>
+	  <ul>
+	  <li>No concrete crack found</li>
+	<!--   <li> This is not a surface</li> -->
+	  <li> Thin diagonal this is not dangerous minor maintenance needed  </li>
+	  <li> Thin horizontal crack this is not too  dangerous minor maintenance needed </li>
+	  <li> Thin vertical crack this is not too  dangerous minor maintenance needed </li>
+	  <li> Thick diagonal this is dangerous maintenance needed immediately </li>
+	  <li> Thick horizontal this is dangerous maintenance needed immediately </li>
+	  <li> Thick vertical this is dangerous maintenance needed immediately </li>
+	   </ul>
+	    <p> For more information to use this web app email me on: up785062@myport.ac.uk</p>
+  </div>
+
+</div>
+<button><a href ="{{ url_for('email') }}">send results via email </a>  </button>
+<button><a href ="{{ url_for('feedback') }}">feedback incorrect classifications </a>  </button>
+
+<center>
+<form id="upload-form" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" >
+	<div class = "jumbotron">
+	<h1 >Concrete Crack Detector</h1>
+	</div>
+	
+    <strong>Choose an image of a surface by clicking button below to activate the "Detect!" button to obtain the surface's severity:</strong><br>
+	
+    <input id="file-picker" type="file" name="file"  onchange="readURL(this)"  accept="image/*" multiple>
+    <div id="msg"></div>
+	 <img class="preview-nodeCenter nodeCenter fadeChange"/>
+	<div style="padding-top: 5px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+  padding-left: 30px;"></div> 
+ <input type="submit" value="Detect!" id="upload-button"  disabled >
+</form>
+ <p id = "result">{{answer}}</p>
+</center>
+</body>
+
+<script>
+    $("#file-picker").change(function(){
+        var input = document.getElementById('file-picker');
+        for (var i=0; i<input.files.length; i++)
+        {
+        //koala.jpg, koala.JPG substring(index) lastIndexOf('a') koala.1.jpg
+            var ext= input.files[i].name.substring(input.files[i].name.lastIndexOf('.')+1).toLowerCase()
+            if ((ext == 'jpg') || (ext == 'png'))
+            {
+                $("#msg").text("Files are supported")
+				
+				
+            }
+            else
+            {
+                $("#msg").text("Files are NOT supported")
+                document.getElementById("file-picker").value ="";
+            }
+        }
+	
+		
+		
+    } 
+	
+	
+	
+	);
+</script>
+
+<script type="text/javascript">
+                $(document).ready(
+        function(){
+            $('input:submit').attr('disabled',true);
+            $('input:file').change(
+                function(){
+                    if ($(this).val()){
+                        $('input:submit').removeAttr('disabled'); 
+                    }
+                    else {
+                        $('input:submit').attr('disabled',true);
+                    }
+                });
+        });
+            </script>
+
+			
+<script>
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+</html>
+
+
+<script>
+$('input').change(function() {
+    
+    var fr = new FileReader;
+    fr.onload = function() { 
+        var data = fr.result;
+        var node = $( ".nodeCenter" ).css( "background-image", 'url(' + data + ')' );
+         var image = new Image();
+         image.src = data;
+         image.onload = function() {
+		 
+           EXIF.getData(image, function() {
+              var orientation = EXIF.getTag(this, "Orientation");
+              switch(orientation) {
+                case 3:
+                  node.css('transform', 'rotate(180deg)');
+                  break;
+                case 6:
+                  node.css('transform', 'rotate(90deg)');
+                  break;
+                case 8:
+                  node.css('transform', 'rotate(-90deg)');
+                  break;
+              }
+          });
+        };
+         
+        //img.src = fr.result;
+    };
+    
+    fr.readAsDataURL(this.files[0]);
+    
+});
+
+
+</script>
+</html>

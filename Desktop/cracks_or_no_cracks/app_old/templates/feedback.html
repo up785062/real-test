@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Surface Crack Detector feedback</title>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js">
+ </script>
+ <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.0.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+<meta charset ="UTF-8">
+<meta http-equiv = "X-UA-Compatible" content ="IE=edge">
+<meta name="viewport" content="width = device-width, initial-scale = 1">  
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<style>
+.jumbotron{background-color:#BA55D3;
+}
+</style>
+<center>
+<form id="query" action="{{ url_for('query') }}" method="POST" enctype="multipart/form-data" >
+<body style= "background-color:#87CEFA">
+<div class = "jumbotron">
+<h1> feedback of wrong classification</h1>
+</div>
+<p> Type below what category the image detected image should have been.</p>
+
+
+
+<p> explain what type the surface should have been?</p>
+
+<br>
+<input name = "classification" > </input>
+<br>
+<br>
+<p> why?</p>
+<textarea name=  "reason" rows="3" cols="40" name="comment" >
+</textarea>
+<br>
+<br>
+<p>type in email and submit you will get a response to your email</p>
+<input name = "email"><input type ="submit"><br>
+
+
+</form>
+</body>
+
+
+</html>

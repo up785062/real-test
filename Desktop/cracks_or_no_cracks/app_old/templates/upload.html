@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Surface Crack Detector</title>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js">
+ </script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<meta charset ="UTF-8">
+<meta http-equiv = "X-UA-Compatible" content ="IE=edge">
+<meta name="viewport" content="width = device-width, initial-scale = 1">  
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body style= "background-color:#87CEFA">
+<style> .jumbotron{background-color:#BA55D3;
+}
+
+</style>
+
+<center>
+<form id="upload-form" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" >
+	<div class = "jumbotron">
+	<h1 >Surface Crack Detector</h1>
+	</div>
+	<div>
+    <strong>Choose an image of a surface by clicking button below, and click "predict" to obtain its severity :</strong><br>
+	<div>
+	</div>
+    <input id="file-picker" type="file" name="file"  onchange="readURL(this)"  accept="image/*" multiple>
+    <div id="msg"></div>
+	<img id="visible_img" src="#" alt=" pick an image" />
+	<div style="padding-top: 5px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+  padding-left: 30px;"></div> 
+ <input type="submit" value="Predict!" id="upload-button">
+</form>
+ <p id = "result">{{answer}}</p>
+</center>
+</body>
+
+<script>
+    $("#file-picker").change(function(){
+        var input = document.getElementById('file-picker');
+        for (var i=0; i<input.files.length; i++)
+        {
+        //koala.jpg, koala.JPG substring(index) lastIndexOf('a') koala.1.jpg
+            var ext= input.files[i].name.substring(input.files[i].name.lastIndexOf('.')+1).toLowerCase()
+            if ((ext == 'jpg') || (ext == 'png'))
+            {
+                $("#msg").text("Files are supported")
+				
+				
+            }
+            else
+            {
+                $("#msg").text("Files are NOT supported")
+                document.getElementById("file-picker").value ="";
+            }
+        }
+	
+		
+		
+    } 
+	
+	
+	
+	);
+</script>
+
+
+<script>
+function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#visible_img')
+                    .attr('src', e.target.result)
+                    .width(200)
+                    .height(200);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+</html>

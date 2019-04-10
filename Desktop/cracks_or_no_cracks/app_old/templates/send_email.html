@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Concrete Crack Detector Send via email</title>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js">
+ </script>
+ <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.0.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+<meta charset ="UTF-8">
+<meta http-equiv = "X-UA-Compatible" content ="IE=edge">
+<meta name="viewport" content="width = device-width, initial-scale = 1">  
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<style>
+.jumbotron{background-color:#BA55D3;
+}
+</style>
+<body style= "background-color:#87CEFA">
+<center>
+<form id="send" action="{{ url_for('send') }}" method="POST" enctype="multipart/form-data" >
+
+<div class = "jumbotron">
+	<h1 >Concrete Crack Detector: </h1>
+	<h3><strong> Send Result via email<strong><h3>
+	</div>
+	<p>Write the building location were concrete crack was found</p>
+<input name = "location" > </input>
+<br><br>
+<p> Write email below<p>
+<input name = "email"><input type ="submit">	
+
+</form>
+<p id = "result">{{mail}}</p>
+</body>
+
+
+</html>
