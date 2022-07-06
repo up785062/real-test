@@ -33,7 +33,7 @@ greenlet==0.4.15
 grpcio==1.11.0
 gunicorn==19.6.0
 h5py==2.7.1
-html5lib==0.9999999
+html5lib==0.999999999
 httplib2==0.12.1
 idna==2.8
 imageio==2.4.1
